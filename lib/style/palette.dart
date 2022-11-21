@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Palette{
+  Color get white => const Color(0xffFFFFFF);
   Color get mainGreen => const Color(0xff06A66C);
   Color get mainRed => const Color(0xffED3419);
   Color get dark => const Color(0xff000000);

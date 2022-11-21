@@ -38,6 +38,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   get: ^4.6.5 # Screen transfer
   google_sign_in: ^5.4.2 # Google Sign-in
+  provider: ^6.0.4 # Provider
 
 dev_dependencies:
   flutter_test:

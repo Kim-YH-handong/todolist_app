@@ -13,8 +13,11 @@ class LoginPage extends StatelessWidget {
             const SizedBox(height: 80.0),
             Column(
               children: <Widget>[
+                Image.asset(
+                    'assets/logo.png',
+                    height: MediaQuery.of(context).size.height*0.14
+                ),
                 const SizedBox(height: 16.0),
-                const Text('SHRINE'),
               ],
             ),
             const SizedBox(height: 120.0),

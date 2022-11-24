@@ -1,9 +1,24 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import '../style/palette.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
+
+  Future<UserCredential> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +38,21 @@ class LoginPage extends StatelessWidget {
             ),
             SizedBox(height: height * 0.1),
             ElevatedButton(
-                onPressed: null,
+                onPressed: () async {
+                  try {
+                    final userCredential =
+                        await FirebaseAuth.instance.signInAnonymously();
+                    print("Signed in with temporary account.");
+                  } on FirebaseAuthException catch (e) {
+                    switch (e.code) {
+                      case "operation-not-allowed":
+                        print("Anonymous auth hasn't been enabled for this project.");
+                        break;
+                      default:
+                        print("Unknown error.");
+                    }
+                  }
+                },
                 child: Text("Start without Login!",
                     style: TextStyle(
                         color: palette.white, fontSize: height * 0.02)),
@@ -37,7 +66,7 @@ class LoginPage extends StatelessWidget {
               height: height*0.02,
             ),
             ElevatedButton(
-                onPressed: null,
+                onPressed: signInWithGoogle,
                 child: Text("Google Login!",
                     style: TextStyle(
                         color: palette.dark, fontSize: height * 0.02)),

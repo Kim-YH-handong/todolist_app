@@ -1,6 +1,9 @@
+import 'package:final_project/screens/AddPage.dart';
 import 'package:final_project/style/palette.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
 
 class StartPage extends StatelessWidget {
@@ -9,7 +12,7 @@ class StartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
-    final palette = context.watch<Palette>();
+    var palette = Palette();
     return Scaffold(
       backgroundColor: palette.white,
       appBar: AppBar(
@@ -22,8 +25,9 @@ class StartPage extends StatelessWidget {
         child: ListView(
           children: [
             ElevatedButton(
-                onPressed: () async {
-                  FirebaseAuth.instance.signOut();
+                onPressed: ()  {
+                  print("Clicked");
+                  Get.to(() => AddPage());
                 },
                 child: Text("LOGOUT")),
             Row(

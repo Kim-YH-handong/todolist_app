@@ -2,6 +2,7 @@ import 'package:final_project/screens/StartPage.dart';
 import 'package:final_project/style/palette.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'TODOLIST',
       theme: ThemeData(),
       home: MultiProvider(

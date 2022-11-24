@@ -10,6 +10,9 @@
 .svn/
 migrate_working_dir/
 
+pubspec.yaml
+pubspec.lock
+
 # IntelliJ related
 *.iml
 *.ipr

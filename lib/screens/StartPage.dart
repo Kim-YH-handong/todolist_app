@@ -2,8 +2,6 @@ import 'package:final_project/screens/AddPage.dart';
 import 'package:final_project/style/palette.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
 
 class StartPage extends StatelessWidget {
@@ -26,8 +24,9 @@ class StartPage extends StatelessWidget {
           children: [
             ElevatedButton(
                 onPressed: ()  {
-                  print("Clicked");
-                  Get.to(() => AddPage());
+                  FirebaseAuth.instance.signOut();
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
                 },
                 child: Text("LOGOUT")),
             Row(

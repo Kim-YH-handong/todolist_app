@@ -23,7 +23,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
-    final palette = context.watch<Palette>();
+    var palette = Palette();
     return Scaffold(
       body: SafeArea(
         child: ListView(

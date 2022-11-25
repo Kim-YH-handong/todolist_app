@@ -1,7 +1,6 @@
 import 'package:final_project/style/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -35,7 +34,6 @@ class _AddPageState extends State<AddPage> {
         leading: IconButton(
             icon: Icon(Icons.arrow_back, color: palette.strongBlue),
             onPressed: () {
-              Get.back();
             }),
       ),
       body: ListView(

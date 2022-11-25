@@ -1,34 +1,77 @@
 {
   "project_info": {
-    "project_number": "89883151124",
-    "project_id": "todolist-e1bfe",
-    "storage_bucket": "todolist-e1bfe.appspot.com"
+    "project_number": "46894246826",
+    "project_id": "final2022-2",
+    "storage_bucket": "final2022-2.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:89883151124:android:71c3d89731f619944a9001",
+        "mobilesdk_app_id": "1:46894246826:android:8e7941bb610297da1199d3",
         "android_client_info": {
           "package_name": "com.example.final_project"
         }
       },
       "oauth_client": [
         {
-          "client_id": "89883151124-0vhuq9e54pi6o2bc5hnj4k0uc7dmaudp.apps.googleusercontent.com",
+          "client_id": "46894246826-pha6a8qkafh8vl967nd4j7hnsjp4g703.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC3meBMy_eJQ5GQGU1FV1NA8mMh0nhPITQ"
+          "current_key": "AIzaSyD9pPtRO1iFugfSA1j0BEuMNZNnCYnwjkY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "89883151124-0vhuq9e54pi6o2bc5hnj4k0uc7dmaudp.apps.googleusercontent.com",
+              "client_id": "46894246826-pha6a8qkafh8vl967nd4j7hnsjp4g703.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "46894246826-irmj2ktgqis3k0u89vp11g1f737u2khj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.mdc100Series"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:46894246826:android:2b15bdbc5f2fc2101199d3",
+        "android_client_info": {
+          "package_name": "com.example.shrine"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "46894246826-pha6a8qkafh8vl967nd4j7hnsjp4g703.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9pPtRO1iFugfSA1j0BEuMNZNnCYnwjkY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "46894246826-pha6a8qkafh8vl967nd4j7hnsjp4g703.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "46894246826-irmj2ktgqis3k0u89vp11g1f737u2khj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.mdc100Series"
+              }
             }
           ]
         }

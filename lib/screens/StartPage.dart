@@ -36,7 +36,9 @@ class StartPage extends StatelessWidget {
                   size: height * 0.03,
                 ),
                 TextButton(
-                    onPressed: null,
+                    onPressed: (){
+                      Navigator.pushNamed(context, '/add');
+                    },
                     child: Text(
                       "오늘 할 일",
                       style: TextStyle(

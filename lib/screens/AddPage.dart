@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/style/palette.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 class AddPage extends StatefulWidget {
   AddPage({Key? key}) : super(key: key);
@@ -14,9 +15,12 @@ class AddPage extends StatefulWidget {
 class _AddPageState extends State<AddPage> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController memoController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   DateTime selectDate = DateTime.now();
   String _selectedTime = DateFormat("yyyy-MM-dd").format(DateTime.now());
+
+  bool isImportant = false;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +38,7 @@ class _AddPageState extends State<AddPage> {
         leading: IconButton(
             icon: Icon(Icons.arrow_back, color: palette.strongBlue),
             onPressed: () {
+              Navigator.pop(context);
             }),
       ),
       body: ListView(
@@ -52,27 +57,54 @@ class _AddPageState extends State<AddPage> {
                     ),
                     SizedBox(
                       width: height * 0.3,
-                      child: TextField(
-                        controller: titleController,
-                        keyboardType: TextInputType.text,
-                        autocorrect: false,
-                        textAlign: TextAlign.center,
-                        obscureText: false,
-                        decoration: const InputDecoration(
-                          labelText: '할 일 입력',
+                      child: Form(
+                        key: _formKey,
+                        child: TextFormField(
+                          validator: (value){
+                            if(value == null || value.isEmpty){
+                              return '할 일 입력 해주세요.';
+                            }else{
+                              return null;
+                            }
+                          },
+                          controller: titleController,
+                          keyboardType: TextInputType.text,
+                          autocorrect: false,
+                          textAlign: TextAlign.center,
+                          obscureText: false,
+                          decoration: const InputDecoration(
+                            labelText: '할 일 입력',
+                          ),
                         ),
                       ),
                     ),
                     SizedBox(
                       width: height * 0.02,
                     ),
-                    IconButton(
+                    isImportant?IconButton(
                       icon: Icon(
-                        Icons.star_border_outlined,
+                        Icons.star,
                         color: palette.mainRed,
                         size: height * 0.04,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          print("AddPage : Change to isImportant = false");
+                          isImportant = false;
+                        });
+                      },
+                    ):IconButton(
+                      icon: Icon(
+                        Icons.star_outline_outlined,
+                        color: palette.mainRed,
+                        size: height * 0.04,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          print("AddPage : Change to isImportant = true");
+                          isImportant = true;
+                        });
+                      },
                     )
                   ],
                 ),
@@ -88,16 +120,18 @@ class _AddPageState extends State<AddPage> {
                   children: [
                     IconButton(
                         onPressed: () {
-                          DatePicker.showDatePicker(context, showTitleActions: true,
-                              locale: LocaleType.ko,
-                              onConfirm: (date) {
-                                setState(() {
-                                  _selectedTime = DateFormat("yyyy-MM-dd").format(date);
-                                  selectDate = date;
-                                  print('AddPage: Chosen Date=> $_selectedTime');
-                                });
-                              }, currentTime: selectDate);
-                        }, icon: Icon(Icons.calendar_today)),
+                          DatePicker.showDatePicker(context,
+                              showTitleActions: true,
+                              locale: LocaleType.ko, onConfirm: (date) {
+                            setState(() {
+                              _selectedTime =
+                                  DateFormat("yyyy-MM-dd").format(date);
+                              selectDate = date;
+                              print('AddPage: Chosen Date=> $_selectedTime');
+                            });
+                          }, currentTime: selectDate);
+                        },
+                        icon: Icon(Icons.calendar_today)),
                     Text("$_selectedTime")
                   ],
                 ),
@@ -119,9 +153,40 @@ class _AddPageState extends State<AddPage> {
                     labelText: '메모',
                   ),
                 ),
-                ElevatedButton(
-                    onPressed: null,
-                    child: Text("입력")
+                Center(
+                  child: ElevatedButton(
+                      onPressed: (){
+                        if(_formKey.currentState!.validate()){
+                          FirebaseFirestore.instance
+                              .collection('user')
+                              .doc(FirebaseAuth.instance.currentUser?.uid)
+                              .collection('todo')
+                              .add({
+                            'title' : titleController.text,
+                            'endDate' : _selectedTime,
+                            'memo' : memoController.text,
+                            'important' : isImportant,
+                            'isEnd' : false
+                          });
+                          print("AddPage: add to firestore!");
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: Text(
+                        "입력",
+                        style: TextStyle(
+                            fontSize: height * 0.02,
+                            color: palette.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      style: ButtonStyle(
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0))),
+                        backgroundColor:
+                            MaterialStateProperty.all(palette.mainGreen),
+                      )),
                 )
               ],
             ),

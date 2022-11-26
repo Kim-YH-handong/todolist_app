@@ -1,7 +1,5 @@
 import 'package:final_project/screens/AddPage.dart';
-import 'package:final_project/screens/LoginPage.dart';
 import 'package:final_project/screens/StartPage.dart';
-import 'package:final_project/style/palette.dart';
 import 'package:final_project/utils/Todostate.dart';
 import 'package:final_project/utils/authentication.dart';
 import 'package:firebase_core/firebase_core.dart';

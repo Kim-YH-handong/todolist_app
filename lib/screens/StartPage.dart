@@ -37,7 +37,7 @@ class StartPage extends StatelessWidget {
                 ),
                 TextButton(
                     onPressed: (){
-                      Navigator.pushNamed(context, '/add');
+                      Navigator.pushNamed(context, '/todo');
                     },
                     child: Text(
                       "오늘 할 일",
@@ -54,7 +54,9 @@ class StartPage extends StatelessWidget {
                   color: palette.mainRed,
                 ),
                 TextButton(
-                    onPressed: null,
+                    onPressed: (){
+                      Navigator.pushNamed(context, '/remark');
+                    },
                     child: Text(
                       "중요",
                       style: TextStyle(
@@ -69,7 +71,9 @@ class StartPage extends StatelessWidget {
                   size: height * 0.03,
                 ),
                 TextButton(
-                    onPressed: null,
+                    onPressed: (){
+                      Navigator.pushNamed(context, '/plan');
+                    },
                     child: Text(
                       "계획된 일정",
                       style: TextStyle(

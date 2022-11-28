@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/style/palette.dart';
 import 'package:final_project/utils/Todostate.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -99,14 +101,21 @@ class _PlanPageState extends State<PlanPage> {
                       decoration: BoxDecoration(
                           border: Border.all(
                             width: 1,
-                            color: palette.strongBlue,
+                            color: palette.strongRed,
                           ),
                           borderRadius: BorderRadius.circular(5)),
                       child: ListTile(
                         contentPadding: EdgeInsets.all(5),
                         //leading. 타일 앞에 표시되는 위젯. 참고로 타일 뒤에는 trailing 위젯으로 사용 가능
                         leading: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            FirebaseFirestore.instance
+                                .collection('user')
+                                .doc(FirebaseAuth.instance.currentUser?.uid)
+                                .collection('todo')
+                                .doc(todo.todayTodo[index].documentId)
+                                .delete();
+                          },
                           icon: const Icon(
                             Icons.circle_outlined,
                             size: 22,
@@ -129,7 +138,7 @@ class _PlanPageState extends State<PlanPage> {
                               Text(
                                 '${todo.todayTodo[index].endDate} (오늘)까지',
                                 style: TextStyle(
-                                  color: palette.strongBlue,
+                                  color: palette.strongRed,
                                   fontFamily: 'Work Sans',
                                   fontSize: height * 0.015,
                                 ),
@@ -139,16 +148,34 @@ class _PlanPageState extends State<PlanPage> {
                         ),
                         trailing: todo.todayTodo[index].important
                             ? IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  FirebaseFirestore.instance
+                                      .collection('user')
+                                      .doc(FirebaseAuth.instance.currentUser?.uid)
+                                      .collection('todo')
+                                      .doc(todo.todayTodo[index].documentId)
+                                      .update({
+                                    'important' : false
+                                  });
+                                },
                                 icon: Icon(
                                   Icons.star,
-                                  color: palette.strongBlue,
+                                  color: palette.strongRed,
                                 ))
                             : IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  FirebaseFirestore.instance
+                                      .collection('user')
+                                      .doc(FirebaseAuth.instance.currentUser?.uid)
+                                      .collection('todo')
+                                      .doc(todo.todayTodo[index].documentId)
+                                      .update({
+                                    'important' : true
+                                  });
+                                },
                                 icon: Icon(
                                   Icons.star_border_outlined,
-                                  color: palette.strongBlue,
+                                  color: palette.strongRed,
                                 )),
                         onTap: () {},
                       ),
@@ -178,14 +205,21 @@ class _PlanPageState extends State<PlanPage> {
                           decoration: BoxDecoration(
                               border: Border.all(
                                 width: 1,
-                                color: palette.strongBlue,
+                                color: palette.strongRed,
                               ),
                               borderRadius: BorderRadius.circular(5)),
                           child: ListTile(
                             contentPadding: EdgeInsets.all(5),
                             //leading. 타일 앞에 표시되는 위젯. 참고로 타일 뒤에는 trailing 위젯으로 사용 가능
                             leading: IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                FirebaseFirestore.instance
+                                    .collection('user')
+                                    .doc(FirebaseAuth.instance.currentUser?.uid)
+                                    .collection('todo')
+                                    .doc(todo.tomorrowTodo[index].documentId)
+                                    .delete();
+                              },
                               icon: const Icon(
                                 Icons.circle_outlined,
                                 size: 22,
@@ -208,7 +242,7 @@ class _PlanPageState extends State<PlanPage> {
                                   Text(
                                     '${todo.tomorrowTodo[index].endDate} (내일)까지',
                                     style: TextStyle(
-                                      color: palette.strongBlue,
+                                      color: palette.strongRed,
                                       fontFamily: 'Work Sans',
                                       fontSize: height * 0.015,
                                     ),
@@ -218,16 +252,34 @@ class _PlanPageState extends State<PlanPage> {
                             ),
                             trailing: todo.tomorrowTodo[index].important
                                 ? IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  FirebaseFirestore.instance
+                                      .collection('user')
+                                      .doc(FirebaseAuth.instance.currentUser?.uid)
+                                      .collection('todo')
+                                      .doc(todo.tomorrowTodo[index].documentId)
+                                      .update({
+                                    'important' : false
+                                  });
+                                },
                                 icon: Icon(
                                   Icons.star,
-                                  color: palette.strongBlue,
+                                  color: palette.strongRed,
                                 ))
                                 : IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  FirebaseFirestore.instance
+                                      .collection('user')
+                                      .doc(FirebaseAuth.instance.currentUser?.uid)
+                                      .collection('todo')
+                                      .doc(todo.tomorrowTodo[index].documentId)
+                                      .update({
+                                    'important' : true
+                                  });
+                                },
                                 icon: Icon(
                                   Icons.star_border_outlined,
-                                  color: palette.strongBlue,
+                                  color: palette.strongRed,
                                 )),
                             onTap: () {},
                           ),
@@ -257,14 +309,21 @@ class _PlanPageState extends State<PlanPage> {
                           decoration: BoxDecoration(
                               border: Border.all(
                                 width: 1,
-                                color: palette.strongBlue,
+                                color: palette.strongRed,
                               ),
                               borderRadius: BorderRadius.circular(5)),
                           child: ListTile(
                             contentPadding: EdgeInsets.all(5),
                             //leading. 타일 앞에 표시되는 위젯. 참고로 타일 뒤에는 trailing 위젯으로 사용 가능
                             leading: IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                FirebaseFirestore.instance
+                                    .collection('user')
+                                    .doc(FirebaseAuth.instance.currentUser?.uid)
+                                    .collection('todo')
+                                    .doc(todo.restTodo[index].documentId)
+                                    .delete();
+                              },
                               icon: const Icon(
                                 Icons.circle_outlined,
                                 size: 22,
@@ -287,7 +346,7 @@ class _PlanPageState extends State<PlanPage> {
                                   Text(
                                     '${todo.restTodo[index].endDate} 까지',
                                     style: TextStyle(
-                                      color: palette.strongBlue,
+                                      color: palette.strongRed,
                                       fontFamily: 'Work Sans',
                                       fontSize: height * 0.015,
                                     ),
@@ -297,16 +356,34 @@ class _PlanPageState extends State<PlanPage> {
                             ),
                             trailing: todo.restTodo[index].important
                                 ? IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  FirebaseFirestore.instance
+                                      .collection('user')
+                                      .doc(FirebaseAuth.instance.currentUser?.uid)
+                                      .collection('todo')
+                                      .doc(todo.restTodo[index].documentId)
+                                      .update({
+                                    'important' : false
+                                  });
+                                },
                                 icon: Icon(
                                   Icons.star,
-                                  color: palette.strongBlue,
+                                  color: palette.strongRed,
                                 ))
                                 : IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  FirebaseFirestore.instance
+                                      .collection('user')
+                                      .doc(FirebaseAuth.instance.currentUser?.uid)
+                                      .collection('todo')
+                                      .doc(todo.restTodo[index].documentId)
+                                      .update({
+                                    'important' : true
+                                  });
+                                },
                                 icon: Icon(
                                   Icons.star_border_outlined,
-                                  color: palette.strongBlue,
+                                  color: palette.strongRed,
                                 )),
                             onTap: () {},
                           ),

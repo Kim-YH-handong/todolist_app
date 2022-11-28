@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/style/palette.dart';
 import 'package:final_project/utils/Todostate.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -84,6 +86,7 @@ class _RemarkPageState extends State<RemarkPage> {
       body: Consumer<TodoState>(builder: (context, todo, child) {
         return ListView.builder(
             itemBuilder: (context, index) {
+              print(todo.importantTodo.length);
               return ListTile(
                   title: Container(
                     decoration: BoxDecoration(
@@ -96,7 +99,14 @@ class _RemarkPageState extends State<RemarkPage> {
                       contentPadding: EdgeInsets.all(5),
                       //leading. 타일 앞에 표시되는 위젯. 참고로 타일 뒤에는 trailing 위젯으로 사용 가능
                       leading: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          FirebaseFirestore.instance
+                              .collection('user')
+                              .doc(FirebaseAuth.instance.currentUser?.uid)
+                              .collection('todo')
+                              .doc(todo.importantTodo[index].documentId)
+                              .delete();
+                        },
                         icon: const Icon(
                           Icons.circle_outlined,
                           size: 22,
@@ -110,14 +120,14 @@ class _RemarkPageState extends State<RemarkPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '${todo.todayTodo[index].title}',
+                              '${todo.importantTodo[index].title}',
                               style: TextStyle(
                                   color: palette.dark,
                                   fontSize: height * 0.02,
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              '${todo.todayTodo[index].endDate} (오늘)까지',
+                              '${todo.importantTodo[index].endDate} (오늘)까지',
                               style: TextStyle(
                                 color: palette.strongPupple,
                                 fontFamily: 'Work Sans',
@@ -127,15 +137,33 @@ class _RemarkPageState extends State<RemarkPage> {
                           ],
                         ),
                       ),
-                      trailing: todo.todayTodo[index].important
+                      trailing: todo.importantTodo[index].important
                           ? IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            FirebaseFirestore.instance
+                                .collection('user')
+                                .doc(FirebaseAuth.instance.currentUser?.uid)
+                                .collection('todo')
+                                .doc(todo.importantTodo[index].documentId)
+                                .update({
+                              'important' : false
+                            });
+                          },
                           icon: Icon(
                             Icons.star,
                             color: palette.strongPupple,
                           ))
                           : IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            FirebaseFirestore.instance
+                                .collection('user')
+                                .doc(FirebaseAuth.instance.currentUser?.uid)
+                                .collection('todo')
+                                .doc(todo.importantTodo[index].documentId)
+                                .update({
+                              'important' : true
+                            });
+                          },
                           icon: Icon(
                             Icons.star_border_outlined,
                             color: palette.strongPupple,

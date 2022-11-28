@@ -4,12 +4,14 @@ class Todo{
     required this.memo,
     required this.endDate,
     required this.important,
-    required this.isEnd
+    required this.isEnd,
+    required this.documentId
   });
 
   final String title;
   final String memo;
   final String endDate;
-  final bool important;
+  bool important;
   final bool isEnd;
+  final String documentId;
 }

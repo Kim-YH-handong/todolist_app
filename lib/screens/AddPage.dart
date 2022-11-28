@@ -157,11 +157,11 @@ class _AddPageState extends State<AddPage> {
                   child: ElevatedButton(
                       onPressed: (){
                         if(_formKey.currentState!.validate()){
-                          FirebaseFirestore.instance
+                          var to_add = FirebaseFirestore.instance
                               .collection('user')
                               .doc(FirebaseAuth.instance.currentUser?.uid)
-                              .collection('todo')
-                              .add({
+                              .collection('todo');
+                          to_add.add({
                             'title' : titleController.text,
                             'endDate' : _selectedTime,
                             'memo' : memoController.text,

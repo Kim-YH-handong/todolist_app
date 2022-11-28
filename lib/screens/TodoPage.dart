@@ -1,7 +1,8 @@
-import 'dart:ui';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_project/screens/DetailPage.dart';
 import 'package:final_project/style/palette.dart';
 import 'package:final_project/utils/Todostate.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -119,7 +120,14 @@ class _TodoPageState extends State<TodoPage> {
                           contentPadding: EdgeInsets.all(5),
                           //leading. 타일 앞에 표시되는 위젯. 참고로 타일 뒤에는 trailing 위젯으로 사용 가능
                           leading: IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              FirebaseFirestore.instance
+                                  .collection('user')
+                                  .doc(FirebaseAuth.instance.currentUser?.uid)
+                                  .collection('todo')
+                                  .doc(todo.todayTodo[index].documentId)
+                                  .delete();
+                            },
                             icon: const Icon(
                               Icons.circle_outlined,
                               size: 22,
@@ -127,7 +135,12 @@ class _TodoPageState extends State<TodoPage> {
                           ),
                           title: GestureDetector(
                             onTap: () {
-                              print("GOTO DETAIL");
+                              Navigator.pushNamed(
+                                context,
+                                '/detail',
+                                arguments: DetailPageArguments(
+                                    todo: todo.todayTodo[index]),
+                              );
                             },
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,13 +165,31 @@ class _TodoPageState extends State<TodoPage> {
                           ),
                           trailing: todo.todayTodo[index].important
                               ? IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    FirebaseFirestore.instance
+                                        .collection('user')
+                                        .doc(FirebaseAuth.instance.currentUser?.uid)
+                                        .collection('todo')
+                                        .doc(todo.todayTodo[index].documentId)
+                                        .update({
+                                      'important' : false
+                                    });
+                                  },
                                   icon: Icon(
                                     Icons.star,
                                     color: palette.strongBlue,
                                   ))
                               : IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    FirebaseFirestore.instance
+                                        .collection('user')
+                                        .doc(FirebaseAuth.instance.currentUser?.uid)
+                                        .collection('todo')
+                                        .doc(todo.todayTodo[index].documentId)
+                                        .update({
+                                      'important' : true
+                                    });
+                                  },
                                   icon: Icon(
                                     Icons.star_border_outlined,
                                     color: palette.strongBlue,

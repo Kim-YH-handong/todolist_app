@@ -50,33 +50,41 @@ class TodoState extends ChangeNotifier {
           _todayTodo = [];
           _tommorrowTodo = [];
           _restTodo = [];
+          _importantTodo = [];
           for (final document in snapshot.docs) {
             print(
                 "Todo Listner: ${document.data()['title'] as String} is added to _todo");
             Todo todo = Todo(
-              title: document.data()['title'] as String,
-              memo: document.data()['memo'] as String,
-              endDate: document.data()['endDate'] as String,
-              important: document.data()['important'],
-              isEnd: document.data()['isEnd'],
-            );
-            if (todayDateTime.compareTo(DateTime.parse(todo.endDate)) == 0) {
-              todayTodo.add(todo);
-            } else if (tommorrowDateTime
-                    .compareTo(DateTime.parse(todo.endDate)) ==
-                0) {
-              tomorrowTodo.add(todo);
-            } else if (todo.isEnd == false) {
-              restTodo.add(todo);
-              /*
-              * 기간이 이미 지난거면 Done이라는 Collection만들어서 거기로 이동시킬까?
-              * 이동시키고 todo collection에 있는거는 삭제해버리기.
-              * */
+                title: document.data()['title'] as String,
+                memo: document.data()['memo'] as String,
+                endDate: document.data()['endDate'] as String,
+                important: document.data()['important'],
+                isEnd: document.data()['isEnd'],
+                documentId: document.id);
+            if (todayDateTime.compareTo(DateTime.parse(todo.endDate)) == 1) {
+              //날짜 지난거 삭제
+              FirebaseFirestore.instance
+                  .collection('user')
+                  .doc(FirebaseAuth.instance.currentUser?.uid)
+                  .collection('todo')
+                  .doc(todo.documentId)
+                  .delete();
+            } else {
+              if (todayDateTime.compareTo(DateTime.parse(todo.endDate)) == 0) {
+                //오늘꺼경우 추가
+                todayTodo.add(todo);
+              } else if (tommorrowDateTime
+                      .compareTo(DateTime.parse(todo.endDate)) ==
+                  0) { //내일꺼 추가
+                tomorrowTodo.add(todo);
+              } else if (todo.isEnd == false) {//나머지 애들 추가
+                restTodo.add(todo);
+              }
+              if (todo.isEnd == false && todo.important == true) {
+                _importantTodo.add(todo);
+              }
+              _todo.add(todo);
             }
-            if (todo.isEnd == false && todo.important == true) {
-              _importantTodo.add(todo);
-            }
-            _todo.add(todo);
           }
           notifyListeners();
         });

@@ -1,4 +1,5 @@
 import 'package:final_project/screens/AddPage.dart';
+import 'package:final_project/screens/DetailPage.dart';
 import 'package:final_project/screens/PlanPage.dart';
 import 'package:final_project/screens/RemarkPage.dart';
 import 'package:final_project/screens/StartPage.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
         '/remark' : (BuildContext context) => RemarkPage(),
         '/plan' : (BuildContext context) => PlanPage(),
         // '/bible' : (BuildContext context) => BiblePage(),
-        // '/detail' : (BuildContext context) => DetailPage(),
+        '/detail' : (BuildContext context) => DetailPage(),
       },
     );
   }

@@ -1,5 +1,9 @@
-import 'package:final_project/screens/AddPage.dart';
+import 'dart:math';
+
+import 'package:final_project/model/Bible.dart';
+import 'package:final_project/screens/BiblePage.dart';
 import 'package:final_project/style/palette.dart';
+import 'package:final_project/utils/Biblestate.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +15,9 @@ class StartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var palette = Palette();
+    List<Bible> _biblelist = context.watch<BibleState>().bible;
+    int randomBibleIndex =
+        Random().nextInt(1); //여기에 우리가 얼마나 만들었는지 넣어주자. 지금은 성경 1임.
     return Scaffold(
       backgroundColor: palette.white,
       appBar: AppBar(
@@ -23,10 +30,10 @@ class StartPage extends StatelessWidget {
         child: ListView(
           children: [
             ElevatedButton(
-                onPressed: ()  {
+                onPressed: () {
                   FirebaseAuth.instance.signOut();
-                  Navigator.of(context)
-                      .pushNamedAndRemoveUntil('/login', (Route<dynamic> route) => false);
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      '/login', (Route<dynamic> route) => false);
                 },
                 child: Text("LOGOUT")),
             Row(
@@ -36,7 +43,7 @@ class StartPage extends StatelessWidget {
                   size: height * 0.03,
                 ),
                 TextButton(
-                    onPressed: (){
+                    onPressed: () {
                       Navigator.pushNamed(context, '/todo');
                     },
                     child: Text(
@@ -54,7 +61,7 @@ class StartPage extends StatelessWidget {
                   color: palette.mainRed,
                 ),
                 TextButton(
-                    onPressed: (){
+                    onPressed: () {
                       Navigator.pushNamed(context, '/remark');
                     },
                     child: Text(
@@ -71,7 +78,7 @@ class StartPage extends StatelessWidget {
                   size: height * 0.03,
                 ),
                 TextButton(
-                    onPressed: (){
+                    onPressed: () {
                       Navigator.pushNamed(context, '/plan');
                     },
                     child: Text(
@@ -91,21 +98,37 @@ class StartPage extends StatelessWidget {
             ),
             Padding(
                 padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                child: Container(
-                  height: height * 0.3,
-                  child: Padding(
-                    padding: EdgeInsets.all(height*0.05),
-                    child: Center(
-                        child: Text(
-                      "우리가 알거니와 하나님을 사랑하는자 곧 그의 뜻대로 부르심을입은 자들에게는 모든 것이 합력하여 선을 이루느니라",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: height * 0.02, color: palette.white),
-                    )),
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    color: palette.mainGreen,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/bible',
+                        arguments: BiblePageArguments(
+                            bible: _biblelist[randomBibleIndex]));
+                  },
+                  child: Container(
+                    height: height * 0.3,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      color: palette.mainGreen,
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(height * 0.05),
+                      child: Center(
+                          child: RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(text: '', children: <TextSpan>[
+                          TextSpan(
+                              text: "${_biblelist[randomBibleIndex].script}\n",
+                              style: TextStyle(
+                                  fontSize: height * 0.02,
+                                  color: palette.white)),
+                          TextSpan(
+                              text: "\n${_biblelist[randomBibleIndex].title}",
+                              style: TextStyle(
+                                  fontSize: height * 0.02,
+                                  color: palette.white)),
+                        ]),
+                      )),
+                    ),
                   ),
                 ))
           ],

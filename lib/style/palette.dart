@@ -12,4 +12,5 @@ class Palette{
   Color get strongBlue => const Color(0xff13A9BE);
   Color get weakPupple => const Color(0xffF3E4FF);
   Color get strongPupple => const Color(0xff863CC1);
+  Color get weakGreen => const Color(0xff008051);
 }

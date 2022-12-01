@@ -4,6 +4,7 @@ import 'package:final_project/utils/Todostate.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:swipe_plus/swipe_plus.dart';
 
 enum Menu { itemOne, itemTwo, itemThree, itemFour }
 
@@ -97,18 +98,8 @@ class _PlanPageState extends State<PlanPage> {
               return ListView.builder(
                   itemBuilder: (context, index) {
                     return ListTile(
-                        title: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                            width: 1,
-                            color: palette.strongRed,
-                          ),
-                          borderRadius: BorderRadius.circular(5)),
-                      child: ListTile(
-                        contentPadding: EdgeInsets.all(5),
-                        //leading. 타일 앞에 표시되는 위젯. 참고로 타일 뒤에는 trailing 위젯으로 사용 가능
-                        leading: IconButton(
-                          onPressed: () {
+                        title: SwipePlus(
+                          onDragComplete: (){
                             FirebaseFirestore.instance
                                 .collection('user')
                                 .doc(FirebaseAuth.instance.currentUser?.uid)
@@ -116,70 +107,90 @@ class _PlanPageState extends State<PlanPage> {
                                 .doc(todo.todayTodo[index].documentId)
                                 .delete();
                           },
-                          icon: const Icon(
-                            Icons.circle_outlined,
-                            size: 22,
+                          child: Container(
+                      decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: palette.strongRed,
+                            ),
+                            borderRadius: BorderRadius.circular(5)),
+                      child: ListTile(
+                          contentPadding: EdgeInsets.all(5),
+                          //leading. 타일 앞에 표시되는 위젯. 참고로 타일 뒤에는 trailing 위젯으로 사용 가능
+                          leading: IconButton(
+                            onPressed: () {
+                              FirebaseFirestore.instance
+                                  .collection('user')
+                                  .doc(FirebaseAuth.instance.currentUser?.uid)
+                                  .collection('todo')
+                                  .doc(todo.todayTodo[index].documentId)
+                                  .delete();
+                            },
+                            icon: const Icon(
+                              Icons.circle_outlined,
+                              size: 22,
+                            ),
                           ),
-                        ),
-                        title: GestureDetector(
-                          onTap: () {
-                            print("GOTO DETAIL");
-                          },
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${todo.todayTodo[index].title}',
-                                style: TextStyle(
-                                    color: palette.dark,
-                                    fontSize: height * 0.02,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                '${todo.todayTodo[index].endDate} (오늘)까지',
-                                style: TextStyle(
-                                  color: palette.strongRed,
-                                  fontFamily: 'Work Sans',
-                                  fontSize: height * 0.015,
+                          title: GestureDetector(
+                            onTap: () {
+                              print("GOTO DETAIL");
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${todo.todayTodo[index].title}',
+                                  style: TextStyle(
+                                      color: palette.dark,
+                                      fontSize: height * 0.02,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                              ),
-                            ],
+                                Text(
+                                  '${todo.todayTodo[index].endDate} (오늘)까지',
+                                  style: TextStyle(
+                                    color: palette.strongRed,
+                                    fontFamily: 'Work Sans',
+                                    fontSize: height * 0.015,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        trailing: todo.todayTodo[index].important
-                            ? IconButton(
-                                onPressed: () {
-                                  FirebaseFirestore.instance
-                                      .collection('user')
-                                      .doc(FirebaseAuth.instance.currentUser?.uid)
-                                      .collection('todo')
-                                      .doc(todo.todayTodo[index].documentId)
-                                      .update({
-                                    'important' : false
-                                  });
-                                },
-                                icon: Icon(
-                                  Icons.star,
-                                  color: palette.strongRed,
-                                ))
-                            : IconButton(
-                                onPressed: () {
-                                  FirebaseFirestore.instance
-                                      .collection('user')
-                                      .doc(FirebaseAuth.instance.currentUser?.uid)
-                                      .collection('todo')
-                                      .doc(todo.todayTodo[index].documentId)
-                                      .update({
-                                    'important' : true
-                                  });
-                                },
-                                icon: Icon(
-                                  Icons.star_border_outlined,
-                                  color: palette.strongRed,
-                                )),
-                        onTap: () {},
+                          trailing: todo.todayTodo[index].important
+                              ? IconButton(
+                                  onPressed: () {
+                                    FirebaseFirestore.instance
+                                        .collection('user')
+                                        .doc(FirebaseAuth.instance.currentUser?.uid)
+                                        .collection('todo')
+                                        .doc(todo.todayTodo[index].documentId)
+                                        .update({
+                                      'important' : false
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.star,
+                                    color: palette.strongRed,
+                                  ))
+                              : IconButton(
+                                  onPressed: () {
+                                    FirebaseFirestore.instance
+                                        .collection('user')
+                                        .doc(FirebaseAuth.instance.currentUser?.uid)
+                                        .collection('todo')
+                                        .doc(todo.todayTodo[index].documentId)
+                                        .update({
+                                      'important' : true
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.star_border_outlined,
+                                    color: palette.strongRed,
+                                  )),
+                          onTap: () {},
                       ),
-                    ));
+                    ),
+                        ));
                   },
                   itemCount: todo.todayTodo.length);
             }),
@@ -201,87 +212,97 @@ class _PlanPageState extends State<PlanPage> {
               return ListView.builder(
                   itemBuilder: (context, index) {
                     return ListTile(
-                        title: Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 1,
-                                color: palette.strongRed,
+                        title: SwipePlus(
+                          onDragComplete: (){
+                            FirebaseFirestore.instance
+                                .collection('user')
+                                .doc(FirebaseAuth.instance.currentUser?.uid)
+                                .collection('todo')
+                                .doc(todo.tomorrowTodo[index].documentId)
+                                .delete();
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 1,
+                                  color: palette.strongRed,
+                                ),
+                                borderRadius: BorderRadius.circular(5)),
+                            child: ListTile(
+                              contentPadding: EdgeInsets.all(5),
+                              //leading. 타일 앞에 표시되는 위젯. 참고로 타일 뒤에는 trailing 위젯으로 사용 가능
+                              leading: IconButton(
+                                onPressed: () {
+                                  FirebaseFirestore.instance
+                                      .collection('user')
+                                      .doc(FirebaseAuth.instance.currentUser?.uid)
+                                      .collection('todo')
+                                      .doc(todo.tomorrowTodo[index].documentId)
+                                      .delete();
+                                },
+                                icon: const Icon(
+                                  Icons.circle_outlined,
+                                  size: 22,
+                                ),
                               ),
-                              borderRadius: BorderRadius.circular(5)),
-                          child: ListTile(
-                            contentPadding: EdgeInsets.all(5),
-                            //leading. 타일 앞에 표시되는 위젯. 참고로 타일 뒤에는 trailing 위젯으로 사용 가능
-                            leading: IconButton(
-                              onPressed: () {
-                                FirebaseFirestore.instance
-                                    .collection('user')
-                                    .doc(FirebaseAuth.instance.currentUser?.uid)
-                                    .collection('todo')
-                                    .doc(todo.tomorrowTodo[index].documentId)
-                                    .delete();
-                              },
-                              icon: const Icon(
-                                Icons.circle_outlined,
-                                size: 22,
-                              ),
-                            ),
-                            title: GestureDetector(
-                              onTap: () {
-                                print("GOTO DETAIL");
-                              },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '${todo.tomorrowTodo[index].title}',
-                                    style: TextStyle(
-                                        color: palette.dark,
-                                        fontSize: height * 0.02,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    '${todo.tomorrowTodo[index].endDate} (내일)까지',
-                                    style: TextStyle(
-                                      color: palette.strongRed,
-                                      fontFamily: 'Work Sans',
-                                      fontSize: height * 0.015,
+                              title: GestureDetector(
+                                onTap: () {
+                                  print("GOTO DETAIL");
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${todo.tomorrowTodo[index].title}',
+                                      style: TextStyle(
+                                          color: palette.dark,
+                                          fontSize: height * 0.02,
+                                          fontWeight: FontWeight.bold),
                                     ),
-                                  ),
-                                ],
+                                    Text(
+                                      '${todo.tomorrowTodo[index].endDate} (내일)까지',
+                                      style: TextStyle(
+                                        color: palette.strongRed,
+                                        fontFamily: 'Work Sans',
+                                        fontSize: height * 0.015,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
+                              trailing: todo.tomorrowTodo[index].important
+                                  ? IconButton(
+                                  onPressed: () {
+                                    FirebaseFirestore.instance
+                                        .collection('user')
+                                        .doc(FirebaseAuth.instance.currentUser?.uid)
+                                        .collection('todo')
+                                        .doc(todo.tomorrowTodo[index].documentId)
+                                        .update({
+                                      'important' : false
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.star,
+                                    color: palette.strongRed,
+                                  ))
+                                  : IconButton(
+                                  onPressed: () {
+                                    FirebaseFirestore.instance
+                                        .collection('user')
+                                        .doc(FirebaseAuth.instance.currentUser?.uid)
+                                        .collection('todo')
+                                        .doc(todo.tomorrowTodo[index].documentId)
+                                        .update({
+                                      'important' : true
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.star_border_outlined,
+                                    color: palette.strongRed,
+                                  )),
+                              onTap: () {},
                             ),
-                            trailing: todo.tomorrowTodo[index].important
-                                ? IconButton(
-                                onPressed: () {
-                                  FirebaseFirestore.instance
-                                      .collection('user')
-                                      .doc(FirebaseAuth.instance.currentUser?.uid)
-                                      .collection('todo')
-                                      .doc(todo.tomorrowTodo[index].documentId)
-                                      .update({
-                                    'important' : false
-                                  });
-                                },
-                                icon: Icon(
-                                  Icons.star,
-                                  color: palette.strongRed,
-                                ))
-                                : IconButton(
-                                onPressed: () {
-                                  FirebaseFirestore.instance
-                                      .collection('user')
-                                      .doc(FirebaseAuth.instance.currentUser?.uid)
-                                      .collection('todo')
-                                      .doc(todo.tomorrowTodo[index].documentId)
-                                      .update({
-                                    'important' : true
-                                  });
-                                },
-                                icon: Icon(
-                                  Icons.star_border_outlined,
-                                  color: palette.strongRed,
-                                )),
-                            onTap: () {},
                           ),
                         ));
                   },
@@ -305,87 +326,97 @@ class _PlanPageState extends State<PlanPage> {
               return ListView.builder(
                   itemBuilder: (context, index) {
                     return ListTile(
-                        title: Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 1,
-                                color: palette.strongRed,
+                        title: SwipePlus(
+                          onDragComplete: (){
+                            FirebaseFirestore.instance
+                                .collection('user')
+                                .doc(FirebaseAuth.instance.currentUser?.uid)
+                                .collection('todo')
+                                .doc(todo.restTodo[index].documentId)
+                                .delete();
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 1,
+                                  color: palette.strongRed,
+                                ),
+                                borderRadius: BorderRadius.circular(5)),
+                            child: ListTile(
+                              contentPadding: EdgeInsets.all(5),
+                              //leading. 타일 앞에 표시되는 위젯. 참고로 타일 뒤에는 trailing 위젯으로 사용 가능
+                              leading: IconButton(
+                                onPressed: () {
+                                  FirebaseFirestore.instance
+                                      .collection('user')
+                                      .doc(FirebaseAuth.instance.currentUser?.uid)
+                                      .collection('todo')
+                                      .doc(todo.restTodo[index].documentId)
+                                      .delete();
+                                },
+                                icon: const Icon(
+                                  Icons.circle_outlined,
+                                  size: 22,
+                                ),
                               ),
-                              borderRadius: BorderRadius.circular(5)),
-                          child: ListTile(
-                            contentPadding: EdgeInsets.all(5),
-                            //leading. 타일 앞에 표시되는 위젯. 참고로 타일 뒤에는 trailing 위젯으로 사용 가능
-                            leading: IconButton(
-                              onPressed: () {
-                                FirebaseFirestore.instance
-                                    .collection('user')
-                                    .doc(FirebaseAuth.instance.currentUser?.uid)
-                                    .collection('todo')
-                                    .doc(todo.restTodo[index].documentId)
-                                    .delete();
-                              },
-                              icon: const Icon(
-                                Icons.circle_outlined,
-                                size: 22,
-                              ),
-                            ),
-                            title: GestureDetector(
-                              onTap: () {
-                                print("GOTO DETAIL");
-                              },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '${todo.restTodo[index].title}',
-                                    style: TextStyle(
-                                        color: palette.dark,
-                                        fontSize: height * 0.02,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    '${todo.restTodo[index].endDate} 까지',
-                                    style: TextStyle(
-                                      color: palette.strongRed,
-                                      fontFamily: 'Work Sans',
-                                      fontSize: height * 0.015,
+                              title: GestureDetector(
+                                onTap: () {
+                                  print("GOTO DETAIL");
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${todo.restTodo[index].title}',
+                                      style: TextStyle(
+                                          color: palette.dark,
+                                          fontSize: height * 0.02,
+                                          fontWeight: FontWeight.bold),
                                     ),
-                                  ),
-                                ],
+                                    Text(
+                                      '${todo.restTodo[index].endDate} 까지',
+                                      style: TextStyle(
+                                        color: palette.strongRed,
+                                        fontFamily: 'Work Sans',
+                                        fontSize: height * 0.015,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
+                              trailing: todo.restTodo[index].important
+                                  ? IconButton(
+                                  onPressed: () {
+                                    FirebaseFirestore.instance
+                                        .collection('user')
+                                        .doc(FirebaseAuth.instance.currentUser?.uid)
+                                        .collection('todo')
+                                        .doc(todo.restTodo[index].documentId)
+                                        .update({
+                                      'important' : false
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.star,
+                                    color: palette.strongRed,
+                                  ))
+                                  : IconButton(
+                                  onPressed: () {
+                                    FirebaseFirestore.instance
+                                        .collection('user')
+                                        .doc(FirebaseAuth.instance.currentUser?.uid)
+                                        .collection('todo')
+                                        .doc(todo.restTodo[index].documentId)
+                                        .update({
+                                      'important' : true
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.star_border_outlined,
+                                    color: palette.strongRed,
+                                  )),
+                              onTap: () {},
                             ),
-                            trailing: todo.restTodo[index].important
-                                ? IconButton(
-                                onPressed: () {
-                                  FirebaseFirestore.instance
-                                      .collection('user')
-                                      .doc(FirebaseAuth.instance.currentUser?.uid)
-                                      .collection('todo')
-                                      .doc(todo.restTodo[index].documentId)
-                                      .update({
-                                    'important' : false
-                                  });
-                                },
-                                icon: Icon(
-                                  Icons.star,
-                                  color: palette.strongRed,
-                                ))
-                                : IconButton(
-                                onPressed: () {
-                                  FirebaseFirestore.instance
-                                      .collection('user')
-                                      .doc(FirebaseAuth.instance.currentUser?.uid)
-                                      .collection('todo')
-                                      .doc(todo.restTodo[index].documentId)
-                                      .update({
-                                    'important' : true
-                                  });
-                                },
-                                icon: Icon(
-                                  Icons.star_border_outlined,
-                                  color: palette.strongRed,
-                                )),
-                            onTap: () {},
                           ),
                         ));
                   },

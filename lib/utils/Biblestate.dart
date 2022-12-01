@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/model/Bible.dart';
@@ -10,11 +11,22 @@ class BibleState extends ChangeNotifier{
     init();
   }
 
+  int randomNumber = 0;
+  bool isBibleReady = false;
+
   StreamSubscription<QuerySnapshot>? _bibleSubscription;
 
   List<Bible> _bible = [];
 
-  List<Bible> get bible => _bible;
+  Bible get_bible(){
+    if (isBibleReady)
+      return _bible[randomNumber];
+    else
+      return Bible(
+        script: "Connecting...",
+        title: ""
+      );
+  }
 
   Future<void> init() async{
     FirebaseAuth.instance.userChanges().listen((user){
@@ -33,6 +45,8 @@ class BibleState extends ChangeNotifier{
              print(bible.title);
              _bible.add(bible);
            }
+           randomNumber = Random().nextInt(_bible.length);
+           isBibleReady = true;
            notifyListeners();
         });
       }

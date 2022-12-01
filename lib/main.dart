@@ -1,7 +1,9 @@
 import 'package:final_project/screens/AddPage.dart';
 import 'package:final_project/screens/BiblePage.dart';
+import 'package:final_project/screens/CustomizePage.dart';
 import 'package:final_project/screens/DetailPage.dart';
 import 'package:final_project/screens/PlanPage.dart';
+import 'package:final_project/screens/ProfilePage.dart';
 import 'package:final_project/screens/RemarkPage.dart';
 import 'package:final_project/screens/StartPage.dart';
 import 'package:final_project/screens/TodoPage.dart';
@@ -70,6 +72,24 @@ class MyApp extends StatelessWidget {
             return PageRouteAnimator(
               child: PlanPage(),
               routeAnimation: RouteAnimation.bottomToTop,
+              curve: Curves.slowMiddle,
+              duration: const Duration(milliseconds: 300),
+              reverseDuration: const Duration(milliseconds: 500),
+            );
+
+          case '/profile':
+            return PageRouteAnimator(
+              child: ProfilePage(),
+              routeAnimation: RouteAnimation.bottomRightToTopLeft,
+              curve: Curves.slowMiddle,
+              duration: const Duration(milliseconds: 300),
+              reverseDuration: const Duration(milliseconds: 500),
+            );
+
+          case '/customize':
+            return PageRouteAnimator(
+              child: CustomizePage(),
+              routeAnimation: RouteAnimation.bottomRightToTopLeft,
               curve: Curves.slowMiddle,
               duration: const Duration(milliseconds: 300),
               reverseDuration: const Duration(milliseconds: 500),

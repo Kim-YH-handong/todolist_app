@@ -5,6 +5,7 @@ import 'package:final_project/style/palette.dart';
 import 'package:final_project/utils/Biblestate.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttermoji/fluttermojiCircleAvatar.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:weather/weather.dart';
@@ -51,6 +52,34 @@ class _StartPageState extends State<StartPage> {
         padding: const EdgeInsets.all(10.0),
         child: ListView(
           children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  GestureDetector(
+                    child: FluttermojiCircleAvatar(
+                      backgroundColor: Colors.grey[200],
+                      radius: 25,
+                    ),
+                    onTap: (){
+                      Navigator.pushNamed(context, '/profile');
+                    },
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text("김영헌",
+                      style: TextStyle(
+                      fontSize: 18
+                  ),),
+                  Text(" 님",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18
+                  ),)
+                ],
+              ),
+            ),
             FutureBuilder(
                 future: getWeather(),
                 builder: (BuildContext context, AsyncSnapshot snapshot){
@@ -104,13 +133,6 @@ class _StartPageState extends State<StartPage> {
                 }
 
             ),
-            ElevatedButton(
-                onPressed: () {
-                  FirebaseAuth.instance.signOut();
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/login', (Route<dynamic> route) => false);
-                },
-                child: Text("LOGOUT")),
             Row(
               children: [
                 Icon(

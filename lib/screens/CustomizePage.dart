@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:final_project/style/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttermoji/fluttermoji.dart';
 
@@ -8,8 +9,22 @@ class CustomizePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var _width = MediaQuery.of(context).size.width;
+    var palette = Palette();
     return Scaffold(
-      appBar: AppBar(),
+      backgroundColor: palette.white,
+      appBar: AppBar(
+        title: Text(
+          "프로필 사용자화",
+          style: TextStyle(color: palette.dark),
+        ),
+        elevation: 0,
+        backgroundColor: palette.white,
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: palette.strongBlue),
+            onPressed: () {
+              Navigator.pop(context);
+            }),
+      ),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -18,7 +33,7 @@ class CustomizePage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 30),
                 child: FluttermojiCircleAvatar(
-                  radius: 100,
+                  radius: 80,
                   backgroundColor: Colors.grey[200],
                 ),
               ),

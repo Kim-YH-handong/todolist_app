@@ -61,28 +61,27 @@ class _StartPageState extends State<StartPage> {
                       backgroundColor: Colors.grey[200],
                       radius: 25,
                     ),
-                    onTap: (){
+                    onTap: () {
                       Navigator.pushNamed(context, '/profile');
                     },
                   ),
                   SizedBox(
                     width: 10,
                   ),
-                  Text("김영헌",
-                      style: TextStyle(
-                      fontSize: 18
-                  ),),
-                  Text(" 님",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18
-                  ),)
+                  Text("${FirebaseAuth.instance.currentUser!.isAnonymous == true
+                      ?"파란너구리"
+                      :FirebaseAuth.instance.currentUser!.displayName}",
+                    style: TextStyle(fontSize: 18),),
+                  Text(
+                    " 님",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  )
                 ],
               ),
             ),
             FutureBuilder(
                 future: getWeather(),
-                builder: (BuildContext context, AsyncSnapshot snapshot){
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
                   //해당 부분은 data를 아직 받아 오지 못했을때 실행되는 부분을 의미한다.
                   if (snapshot.hasData == false) {
                     return CircularProgressIndicator();
@@ -101,11 +100,10 @@ class _StartPageState extends State<StartPage> {
                   else {
                     return ListTile(
                       title: Container(
-
                         child: ListTile(
                           contentPadding: EdgeInsets.all(5),
                           //leading. 타일 앞에 표시되는 위젯. 참고로 타일 뒤에는 trailing 위젯으로 사용 가능
-                          leading:  Image.network(icon_url),
+                          leading: Image.network(icon_url),
                           title: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -130,9 +128,7 @@ class _StartPageState extends State<StartPage> {
                       ),
                     );
                   }
-                }
-
-            ),
+                }),
             Row(
               children: [
                 Icon(
@@ -195,12 +191,12 @@ class _StartPageState extends State<StartPage> {
             ),
             Padding(
                 padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                child: Consumer<BibleState>(builder: (context, bible, child){
+                child: Consumer<BibleState>(builder: (context, bible, child) {
                   Bible _bible = bible.get_bible();
                   return GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       Navigator.pushNamed(context, '/bible',
-                      arguments: BiblePageArguments(bible: _bible));
+                          arguments: BiblePageArguments(bible: _bible));
                     },
                     child: Container(
                       height: height * 0.3,
@@ -212,25 +208,24 @@ class _StartPageState extends State<StartPage> {
                         padding: EdgeInsets.all(height * 0.05),
                         child: Center(
                             child: RichText(
-                              textAlign: TextAlign.center,
-                              text: TextSpan(text: '', children: <TextSpan>[
-                                TextSpan(
-                                    text: "${_bible.script}\n",
-                                    style: TextStyle(
-                                        fontSize: height * 0.02,
-                                        color: palette.white)),
-                                TextSpan(
-                                    text: "\n${_bible.title}",
-                                    style: TextStyle(
-                                        fontSize: height * 0.02,
-                                        color: palette.white)),
-                              ]),
-                            )),
+                          textAlign: TextAlign.center,
+                          text: TextSpan(text: '', children: <TextSpan>[
+                            TextSpan(
+                                text: "${_bible.script}\n",
+                                style: TextStyle(
+                                    fontSize: height * 0.02,
+                                    color: palette.white)),
+                            TextSpan(
+                                text: "\n${_bible.title}",
+                                style: TextStyle(
+                                    fontSize: height * 0.02,
+                                    color: palette.white)),
+                          ]),
+                        )),
                       ),
                     ),
                   );
-                })
-            )
+                }))
           ],
         ),
       ),

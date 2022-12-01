@@ -70,19 +70,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
               ),
-              // (FirebaseAuth.instance.currentUser!.isAnonymous)
-              //     ? Text(
-              //         "${FirebaseAuth.instance.currentUser!.displayName}",
-              //         style: TextStyle(fontSize: 18),
-              //       )
-              //     : Text(
-              //         "파란너구리",
-              //         style: TextStyle(fontSize: 18),
-              //       ),
-              // Text(
-              //   " 님",
-              //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-              // ),
             ],
           ),
         ));

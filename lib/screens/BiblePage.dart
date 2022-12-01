@@ -16,6 +16,7 @@ class BiblePage extends StatefulWidget {
 }
 
 class _BiblePageState extends State<BiblePage> {
+
   @override
   Widget build(BuildContext context) {
     var palette = Palette();

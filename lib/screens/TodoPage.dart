@@ -8,8 +8,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:swipe_plus/swipe_plus.dart';
 
-enum Menu { itemOne, itemTwo, itemThree, itemFour }
-
 class TodoPage extends StatefulWidget {
   const TodoPage({Key? key}) : super(key: key);
 
@@ -39,39 +37,6 @@ class _TodoPageState extends State<TodoPage> {
               Navigator.pop(context);
             },
             icon: Icon(Icons.arrow_back, color: palette.strongBlue)),
-        actions: <Widget>[
-          PopupMenuButton<Menu>(
-              icon: Icon(Icons.menu, color: Color(0xff037484)),
-              // Callback that sets the selected popup menu item.
-              onSelected: (Menu item) {
-                setState(() {
-                  _selectedMenu = item.name;
-                });
-              },
-              itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
-                    PopupMenuItem<Menu>(
-                      value: Menu.itemOne,
-                      child: Row(
-                        children: [
-                          Icon(Icons.palette, color: palette.dark),
-                          Text('테마 변경'),
-                        ],
-                      ),
-                    ),
-                    PopupMenuItem<Menu>(
-                      value: Menu.itemTwo,
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.check_circle_rounded,
-                            color: palette.dark,
-                          ),
-                          Text('완료한 일정 숨기기'),
-                        ],
-                      ),
-                    ),
-                  ]),
-        ],
       ),
       body: Padding(
         padding: EdgeInsets.all(height * 0.00),

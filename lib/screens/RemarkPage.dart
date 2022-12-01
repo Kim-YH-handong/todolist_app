@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:swipe_plus/swipe_plus.dart';
 
-enum Menu { itemOne, itemTwo, itemThree, itemFour }
-
 class RemarkPage extends StatefulWidget {
   const RemarkPage({Key? key}) : super(key: key);
 
@@ -46,43 +44,6 @@ class _RemarkPageState extends State<RemarkPage> {
               Icons.arrow_back,
               color: palette.strongPupple,
             )),
-        actions: <Widget>[
-          PopupMenuButton<Menu>(
-              icon: Icon(
-                Icons.menu,
-                color: Color(0xff863CC1),
-              ),
-              // Callback that sets the selected popup menu item.
-              onSelected: (Menu item) {
-                setState(() {
-                  _selectedMenu = item.name;
-                });
-              },
-              itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
-                    PopupMenuItem<Menu>(
-                      value: Menu.itemOne,
-                      child: Row(
-                        children: [
-                          Icon(Icons.palette, color: Colors.black),
-                          Text('테마 변경'),
-                        ],
-                      ),
-                    ),
-                    PopupMenuItem<Menu>(
-                      value: Menu.itemTwo,
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.check_circle_rounded,
-                            color: Colors.black,
-                          ),
-                          Text('완료한 일정 숨기기'),
-                        ],
-                      ),
-                    ),
-                  ]),
-        ],
-        //bottom: PreferredSize(child: child, preferredSize: preferredSize), //여기에서 나중에 날짜별로 묶을 거임
       ),
       body: Consumer<TodoState>(builder: (context, todo, child) {
         return ListView.builder(

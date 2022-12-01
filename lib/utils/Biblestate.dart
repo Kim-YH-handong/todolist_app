@@ -41,8 +41,6 @@ class BibleState extends ChangeNotifier{
                title: document.data()['title'] as String,
                script: document.data()['script'] as String
              );
-             print(bible.script);
-             print(bible.title);
              _bible.add(bible);
            }
            randomNumber = Random().nextInt(_bible.length);

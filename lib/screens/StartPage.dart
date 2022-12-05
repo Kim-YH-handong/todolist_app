@@ -192,7 +192,21 @@ class _StartPageState extends State<StartPage> {
             Padding(
                 padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
                 child: Consumer<BibleState>(builder: (context, bible, child) {
+                  Color bbC = palette.bbYellow;;
                   Bible _bible = bible.get_bible();
+                  if (_bible.bbC == 'red') {
+                    bbC = palette.bbRed;
+                  } else if (_bible.bbC == 'yellow') {
+                    bbC = palette.bbYellow;
+                  } else if (_bible.bbC == 'pink') {
+                    bbC = palette.bbPink;
+                  } else if (_bible.bbC == 'blue') {
+                    bbC = palette.bbBlue;
+                  } else if (_bible.bbC == 'green') {
+                    bbC = palette.bbGreen;
+                  } else if (_bible.bbC == 'violet') {
+                    bbC = palette.bbViolet;
+                  }
                   return GestureDetector(
                     onTap: () {
                       Navigator.pushNamed(context, '/bible',
@@ -202,7 +216,7 @@ class _StartPageState extends State<StartPage> {
                       height: height * 0.3,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
-                        color: palette.mainGreen,
+                        color: bbC,
                       ),
                       child: Padding(
                         padding: EdgeInsets.all(height * 0.05),

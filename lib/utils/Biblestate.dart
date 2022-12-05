@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_project/model/Bible.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BibleState extends ChangeNotifier{
   BibleState(){
@@ -24,11 +25,15 @@ class BibleState extends ChangeNotifier{
     else
       return Bible(
         script: "Connecting...",
-        title: ""
+        title: "",
+        bbC: ""
       );
   }
 
   Future<void> init() async{
+    final prefs = await SharedPreferences.getInstance();
+    final bibleColor = prefs.getString('bibleColor')??'green';
+
     FirebaseAuth.instance.userChanges().listen((user){
       if(user != null){
         _bibleSubscription = FirebaseFirestore.instance
@@ -39,7 +44,8 @@ class BibleState extends ChangeNotifier{
            for(final document in snapshot.docs){
              Bible bible = Bible(
                title: document.data()['title'] as String,
-               script: document.data()['script'] as String
+               script: document.data()['script'] as String,
+               bbC: bibleColor
              );
              _bible.add(bible);
            }
